@@ -2,19 +2,28 @@
 /**
  * CodeIgniter DB_Sync!
  *
- * This is a wrapper for the CLI tool mk-table-sync which is part of the
- * maatkit mysql toolkit
-  *
+ * This is a wrapper for the very powerfull CLI tool mk-table-sync 
+ * <http://www.maatkit.org/doc/mk-table-sync.html> which is part of 
+ * the maatkit mysql toolkit <http://www.maatkit.org/>.
+ * 
+ * With great power comes great responsibility! This tool changes data, 
+ * so it is a good idea to back up your data. It is also very powerful, 
+ * which means it is very complex and has the potential to ruin
+ * your database when not used properly.
+ * 
+ * This software is "as-is" without any guarantee or warranty.
+ * The author is not responsible/liable for any damage resulting from the use of this software.
+ *
  * @package		CodeIgniter
  * @author		Jeroen v.d. Gulik <http://isset.nl>
  * @license		DBAD License v1.0 <http://philsturgeon.co.uk/code/dbad-license>
- * @version		1.0
+ * @version		0.1
  */
 class DB_Sync {
 
-	protected $dbconfig;
-	protected $last_query;
-	protected $target_table;
+	protected $dbconfig;	// stores the database array for convienence
+	protected $last_query;	// stores the last executes cli cmd for debugging
+	protected $target_table;// stores the table name if it's different than the source
 
 	function __construct()
 	{
