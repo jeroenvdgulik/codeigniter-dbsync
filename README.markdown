@@ -76,6 +76,10 @@ Return a group from the database array
 
 	$this->db_sync->get_config('default');
 
+Parse the output to an array for logging and message purposes
+
+	$this->db_sync->parse_log_to_array($logstring)
+
 
 Contact
 -----

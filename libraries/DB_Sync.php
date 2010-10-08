@@ -2,15 +2,15 @@
 /**
  * CodeIgniter DB_Sync!
  *
- * This is a wrapper for the very powerfull CLI tool mk-table-sync 
- * <http://www.maatkit.org/doc/mk-table-sync.html> which is part of 
+ * This is a wrapper for the very powerfull CLI tool mk-table-sync
+ * <http://www.maatkit.org/doc/mk-table-sync.html> which is part of
  * the maatkit mysql toolkit <http://www.maatkit.org/>.
- * 
- * With great power comes great responsibility! This tool changes data, 
- * so it is a good idea to back up your data. It is also very powerful, 
+ *
+ * With great power comes great responsibility! This tool changes data,
+ * so it is a good idea to back up your data. It is also very powerful,
  * which means it is very complex and has the potential to ruin
  * your database when not used properly.
- * 
+ *
  * This software is "as-is" without any guarantee or warranty.
  * The author is not responsible/liable for any damage resulting from the use of this software.
  *
@@ -38,7 +38,7 @@ class DB_Sync {
 	 * @param string optional $group name of the database group to target
 	 * @return array
 	 */
-    function get_config($group = NULL) 
+    function get_config($group = NULL)
 	{
 		if (is_null($group))
 		{
@@ -76,7 +76,7 @@ class DB_Sync {
 
 		// Prepare the source part of the cmd
 		$shellcmd = "mk-table-sync --execute --verbose u={$source['username']},p={$source['password']},h={$source['hostname']},D={$source['database']},t={$table} ";
-		
+
 		foreach ($targets as $target)
 		{
 			$target = $this->get_config($target);
@@ -93,7 +93,7 @@ class DB_Sync {
 
 		// Save the cmd for debugging
 		$this->last_query = $shellcmd;
-		
+
 		$output = shell_exec($shellcmd);
 
 		return $output;
@@ -107,6 +107,42 @@ class DB_Sync {
 	public function set_target($table)
 	{
 		$this->target_table = $table;
+	}
+
+	/**
+	 * Parses log string to array
+	 * Returns returns an array
+	 *
+	 * @param log string
+	 * @return array
+	 */
+	function parse_log_to_array($logstring)
+	{
+		if ($logstring != '')
+		{
+			$result = explode('#', $logstring);
+			$result = explode(' ', $result[3]);
+			$temp_data = array();
+			foreach ($result as $key=>$value)
+			{
+				if (strlen($value) > 0)
+				{
+					$temp_data[] = $value;
+				}
+			}
+
+			$data['num_deleted']	= $temp_data[0];
+			$data['num_replaced']	= $temp_data[1];
+			$data['num_inserted']	= $temp_data[2];
+			$data['num_updated']	= $temp_data[3];
+			$data['str_algorithm']	= $temp_data[4];
+			$data['num_exit']	= $temp_data[5];
+			$data['str_table']	= $temp_data[6];
+			$data['dat_date']	= date('Y-m-d H:i:s');
+			$data['mem_log']	= $logstring;
+
+			return $data;
+		}
 	}
 }
 
