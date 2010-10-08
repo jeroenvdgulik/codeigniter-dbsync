@@ -1,4 +1,4 @@
-CodeIgniter-Message
+CodeIgniter-dbsync
 ================
 
 CodeIgniter-dbsync is a wrapper for the very powerfull CLI tool mk-table-sync 
